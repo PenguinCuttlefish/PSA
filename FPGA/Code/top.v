@@ -22,9 +22,9 @@
 
 module top(
     input CLK100MHZ,
-    input patternToBeSearched,
+    input [1:0]  patternToBeSearched,
     input lengthPTBS, //length of the pattern to be searched for
-    input blockToBeSearched, //the address block of memory to search
+   // input blockToBeSearched, //the address block of memory to search
     input lengthBTBS,// length of the block address to be searched
     input activate,// it activate clock to activate the PSA and tell it to continue searching from last address
     input reset,//set b and clock reset to tell the PSA to start searching from address b
@@ -33,8 +33,7 @@ module top(
     
     );
     
-    
-    
+    reg found;
      // Memory IO
     reg ena = 1;
     reg wea = 0;
@@ -58,13 +57,23 @@ module top(
     
      always @ (posedge CLK100MHZ) begin
         if (reset)begin
-            addra = blockToBeSearched;
+            addra = 0;
         end
         
-         for (i = 0; i <lengthBTBS - lengthPTBS; i = i + 1) begin
+         for (i = 0; i <lengthBTBS- lengthPTBS; i = i + 1) begin
             j = 0;
             
             for (j = 0; j < lengthPTBS; j = j + 1) begin
+                addra = i+j;
+                if (douta == patternToBeSearched[j])begin
+                    break;
+                end
+            if (j == lengthPTBS)begin
+                found <= douta;
+            end
+                
+                
+            
                 
             end
             
