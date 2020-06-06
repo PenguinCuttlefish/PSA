@@ -20,21 +20,22 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module top(
+module search(
     input CLK100MHZ,
-    input [1:0]  patternToBeSearched,
+    input [7:0]  patternToBeSearched,
     input lengthPTBS, //length of the pattern to be searched for
-   // input blockToBeSearched, //the address block of memory to search
-    input lengthBTBS,// length of the block address to be searched
-    input activate,// it activate clock to activate the PSA and tell it to continue searching from last address
+    input [7:0] blockToBeSearched, //the address block of memory to search
+    input [7:0] lengthBTBS,// length of the block address to be searched
+    input  activate,// it activate clock to activate the PSA and tell it to continue searching from last address
     input reset,//set b and clock reset to tell the PSA to start searching from address b
-    output done,//set to high when search ids done
-    output found// returns where the pattern being searched for is found
+    output reg done,//set to high when search ids done
+    output reg [7:0] found// returns where the pattern being searched for is found
     
     );
     
-    reg found;
+    reg lengthPTBS=0;
      // Memory IO
+    //create the array of the parttern
     reg ena = 1;
     reg wea = 0;
     reg [7:0] addra=0; //The addresses will range from 0 to 250 assuming the data_250.coe is used
@@ -42,6 +43,7 @@ module top(
     wire [7:0] douta; //This is a single byte from memory from a particular adress (addra)
     integer i;
     integer j;
+    reg x;
 
     
     // Instantiate block memory 
@@ -54,33 +56,29 @@ module top(
       dina,    // input wire [7 : 0] dina
       douta  // output wire [7 : 0] douta
     );
+    always@(posedge CLK100MHZ)begin
+            
+    end
     
-     always @ (posedge CLK100MHZ) begin
+     always @ (*) begin
+        x=  lengthPTBS-1;
+        reg [7:0] pattern[0:x];//fix syntax
         if (reset)begin
-            addra = 0;
+            addra = blockToBeSearched;
         end
-        
-         for (i = 0; i <lengthBTBS- lengthPTBS; i = i + 1) begin
+        for (i = blockToBeSearched ; i < (lengthBTBS - lengthPTBS)+blockToBeSearched; i = i + 1) begin
             j = 0;
+            done = 0;
             
-            for (j = 0; j < lengthPTBS; j = j + 1) begin
-                addra = i+j;
-                if (douta == patternToBeSearched[j])begin
-                    break;
+            while(douta != patternToBeSearched[j]) begin
+                for (j = 0; j < lengthPTBS; j = j + 1) begin
+                    addra <= i+j;
                 end
-            if (j == lengthPTBS)begin
-                found <= douta;
+                if (j == lengthPTBS) begin
+                    found <= douta;
+                    done = 1;
+                end     
             end
-                
-                
-            
-                
-            end
-            
          end
-        
      end
-
-    
-    
 endmodule
