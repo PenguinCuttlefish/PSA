@@ -35,6 +35,7 @@ module search(
     
     //create the array of the pattern
     reg [7:0] pattern [0:lengthPTBS-1];
+    //reg [7:0] pattern [0:100];
      // Memory IO
     reg ena = 1;
     reg wea = 0;
@@ -58,20 +59,18 @@ module search(
     );
     
      always @ (*) begin
-        if (activate)begin
-            if (reset)begin
-                addra = patternToBeSearched;
-                for(m = 0; m<lengthPTBS; m = m +1)begin
-                    pattern[m] <= douta;
-                    addra <= addra +1;
-                end
-                addra = blockToBeSearched;
+         if (reset)begin //Reset repopulates pattern. When activated search starts at blocktobesearched address.
+            addra = patternToBeSearched;
+            for(m = 0; m<lengthPTBS; m = m +1)begin
+                pattern[m] = douta;
+                addra = addra +1;
             end
+         end
+         if (activate)begin
             for (i = blockToBeSearched ; i < (lengthBTBS - lengthPTBS)+blockToBeSearched; i = i + 1) begin
                 j = 0;
                 done = 0;
-                
-                while(douta != patternToBeSearched[j]) begin
+                while(douta != pattern[j]) begin
                     for (j = 0; j < lengthPTBS; j = j + 1) begin
                         addra <= i+j;
                     end
