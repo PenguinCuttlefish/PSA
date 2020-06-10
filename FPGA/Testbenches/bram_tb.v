@@ -32,7 +32,7 @@ module bram_tb(
     wire [7:0]douta;
     
     //Instantiate
-      blk_mem_gen_0 bram (
+      blk_mem_gen_1 bram (
       .clka(clka),    // input wire clka
       .ena(ena),      // input wire ena
       .wea(wea),      // input wire [0 : 0] wea
