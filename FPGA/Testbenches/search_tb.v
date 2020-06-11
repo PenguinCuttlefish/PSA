@@ -45,10 +45,10 @@ module search_tb(
     
     initial begin
         CLK100MHZ = 0;
-        p = 10;
+        p = 0;
         pl = 2;
-        b = 145;
-        bl = 30;
+        b = 0;
+        bl = 20;
         activate = 0;
         //Reset
         reset = 0; #5
@@ -63,7 +63,7 @@ module search_tb(
     end
     
     always@(reset,activate,done,test.pcount,test.bcount,test.douta,test.pattern_byte,test.state)begin
-        $display("reset,\tactivate,found,\tdone,pattern,pcount,addra_p,douta,bcount,addra,state");
-        $display("%d,\t\t%d,\t\t%d,\t%d,\t\t%h,\t%d,\t%d,\t%h,\t%d,\t%d,\%b", reset,activate,found,done,test.pattern_byte,test.pcount,test.addra_p,test.douta,test.bcount,test.addra,test.state);
+        $display("reset,activate,found,done,pattern,pcount,addra_p,douta,bcount,addra,state");
+        $display("%d,\t%d,\t%d,\t%d,%h,\t%d,\t%d,\t%h,\t%d,\t%d,\t%b", reset,activate,found,done,test.pattern_byte,test.pcount,test.addra_p,test.douta,test.bcount,test.addra,test.state);
     end
 endmodule
