@@ -62,8 +62,8 @@ module search_tb(
         #1  CLK100MHZ =~ CLK100MHZ;
     end
     
-    always@(reset,activate,done,test.pcount,test.bcount,test.state)begin
-        $display("reset,\tactivate,found,\tdone,pattern,pcount,douta,bcount,state,addra");
-        $display("%d,\t\t%d,\t\t%d,\t%d,\t\t%h,\t%d,\t%h,\t%d,\t%b,\t%d", reset,activate,found,done,test.pattern_byte,test.pcount,test.douta,test.bcount,test.state,test.addra);
+    always@(reset,activate,done,test.pcount,test.bcount,test.douta,test.pattern_byte,test.state)begin
+        $display("reset,\tactivate,found,\tdone,pattern,pcount,addra_p,douta,bcount,addra,state");
+        $display("%d,\t\t%d,\t\t%d,\t%d,\t\t%h,\t%d,\t%d,\t%h,\t%d,\t%d,\%b", reset,activate,found,done,test.pattern_byte,test.pcount,test.addra_p,test.douta,test.bcount,test.addra,test.state);
     end
 endmodule

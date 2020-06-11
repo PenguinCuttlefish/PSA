@@ -30,9 +30,18 @@ module bram_tb(
     reg [7:0]dina;
     //Outputs
     wire [7:0]douta;
-    
+    wire [7:0]pattern_byte;
     //Instantiate
-      blk_mem_gen_1 bram (
+      blk_mem_gen_1 pattern (
+      .clka(clka),    // input wire clka
+      .ena(ena),      // input wire ena
+      .wea(wea),      // input wire [0 : 0] wea
+      .addra(addra),  // input wire [7 : 0] addra
+      .dina(dina),    // input wire [7 : 0] dina
+      .douta(pattern_byte)  // output wire [7 : 0] douta
+    );
+    
+    blk_mem_gen_0 bram (
       .clka(clka),    // input wire clka
       .ena(ena),      // input wire ena
       .wea(wea),      // input wire [0 : 0] wea
@@ -43,7 +52,7 @@ module bram_tb(
     initial begin
         // Initialize Inputs
         clka = 0;
-        addra = 0;
+        addra = 2;
         wea <= 0;
         ena <= 1;
     end

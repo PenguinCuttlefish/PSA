@@ -36,13 +36,13 @@ module search(
      // Memory IO
     reg ena = 1;
     reg wea = 0;
-    reg [7:0] addra=0;          //The addresses will range from 0 to 250 assuming the data_250.coe is used
+    reg [7:0] addra=0;          //The addresses will range from 0 to 249 assuming the data_250.coe is used
     reg [7:0] dina=0;           //We're not putting data in, so we can leave this unassigned
     wire [7:0] douta;           //This is a single byte from memory from a particular adress (addra)
     // pattern IO
     reg ena_p = 1;
     reg wea_p = 0;
-    reg [7:0] addra_p=0;        //The addresses will range from 0 to 16 assuming the patterns_16.coe is used
+    reg [7:0] addra_p=0;        //The addresses will range from 0 to 15 assuming the patterns_16.coe is used
     reg [7:0] dina_p=0;         //We're not putting data in, so we can leave this as is
     wire[7:0] pattern_byte;    //This is a single byte from pattern memory from a particular adress (addra_p)
     //counters
@@ -57,6 +57,8 @@ module search(
     parameter [6:0] FOUND     = 7'b0100000;
     parameter [6:0] DONE      = 7'b1000000;
     reg       [6:0] state;
+    //delay compare. Bram only updates output after two clock cycles.
+    reg [2:0] dcount = 0;
     
     // Instantiate block memory 
     // Copy from the instantiation template and change signal names to the ones under "MemoryIO"
@@ -84,55 +86,63 @@ module search(
         //Reset makes the search algorithm search from address b
         if(reset) begin
             state   <= RESET;
+            found   <= 8'hff;
             pcount  <= 0;
             bcount  <= 0;
             done    <= 0;
         end 
         else if(activate) begin
             case(state)
-                RESET:      begin
+                RESET:      begin            
                                 state   <= CMP;
+                                pcount  <= 0;
+                                bcount  <= 0;
+                                done    <= 0;
                             end
                 CMP:        begin
-                                
-                                if(douta==pattern_byte) begin
+                                addra   <= b+bcount;
+                                addra_p <= p+pcount;
+                                dcount  <= dcount+1;
+                                if(dcount==5&&douta==pattern_byte) begin
+                                    bcount <= bcount + 1;
+                                    pcount <= pcount + 1;
+                                    dcount <= 0;
                                     state <= CMP_TRUE;        
-                                end else begin
+                                end else if(dcount==5) begin
+                                    pcount <= 0;
+                                    bcount <= bcount + 1;
+                                    dcount <= 0;
                                     state <= CMP_FALSE;
-                                end       
+                                end else begin
+                                    state <= CMP;
+                                end
                             end
-                CMP_FALSE:  begin
-                                
-                                bcount <= bcount + 1;
+                CMP_FALSE:  begin                                
                                 if(bcount==bl) begin
                                     state<=DONE;
                                 end else begin
                                     state<=CMP;
                                 end
                             end
-                CMP_TRUE:   begin
-                                
-                                bcount <= bcount + 1;
-                                pcount <= pcount + 1;
-                                if(pcount==pl-1) begin
+                CMP_TRUE:   begin       
+                                if(pcount==pl) begin
                                     state <= FOUND;
-                                end else if(pcount!=pl-1 && bcount==bl) begin
-                                    state <= DONE;
-                                end 
+                                    pcount <= 0;
+                                    found  <= addra-pl+1;
+                                end else if(pcount!=pl && bcount==bl) begin
+                                    state <= DONE;                                   
+                                end else begin
+                                    state <= CMP;
+                                end
                             end
                 FOUND:      begin
-                              
-                                pcount <= 0;
-                                found  <= addra-pl;
                                 if(bcount==bl) begin
                                     state <= DONE;
                                 end else if(bcount<bl) begin
                                     state <= CONTINUE;
                                 end
                             end
-                CONTINUE:   begin
-                                //addra   <= b + bcount;
-                                //addra_p <= p + pcount;
+                CONTINUE:   begin                
                                 pcount <= 0;
                                 state  <= CMP;
                             end
