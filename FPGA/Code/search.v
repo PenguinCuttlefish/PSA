@@ -102,7 +102,8 @@ module search(
                 CMP:        begin
                                 addra   <= b+bcount;
                                 addra_p <= p+pcount;
-                                dcount  <= dcount+1;
+                                dcount  <= dcount+1; 
+                                //Wait 5 cycles before comparing because the bram outputs only update after two cycles after the input changes.
                                 if(dcount==5&&douta==pattern_byte) begin
                                     bcount <= bcount + 1;
                                     pcount <= pcount + 1;

@@ -1,13 +1,13 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
-// Engineer: 
+// Engineer: Vicky Feng
 // 
 // Create Date: 10.06.2020 19:34:24
 // Design Name: 
 // Module Name: search_tb
-// Project Name: 
-// Target Devices: 
+// Project Name: PSA
+// Target Devices: nexys-a7
 // Tool Versions: 
 // Description: 
 // 
@@ -45,10 +45,10 @@ module search_tb(
     
     initial begin
         CLK100MHZ = 0;
-        p = 0;
+        p = 10;
         pl = 2;
-        b = 0;
-        bl = 20;
+        b = 145;
+        bl = 30;
         activate = 0;
         //Reset
         reset = 0; #5
