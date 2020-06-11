@@ -86,7 +86,7 @@ module search(
         //Reset makes the search algorithm search from address b
         if(reset) begin
             state   <= RESET;
-            found   <= 8'hff;
+            found   <= 8'hff;  //If the pattern can not be found, found will be 255
             pcount  <= 0;
             bcount  <= 0;
             done    <= 0;
