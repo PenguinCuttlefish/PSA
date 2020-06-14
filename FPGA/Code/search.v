@@ -111,7 +111,7 @@ module search(
                                     state <= CMP_TRUE;        
                                 end else if(dcount==5) begin
                                     pcount <= 0;
-                                    bcount <= bcount + 1;
+                                    bcount <= bcount + 1 - pcount;
                                     dcount <= 0;
                                     state <= CMP_FALSE;
                                 end else begin
