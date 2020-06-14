@@ -25,8 +25,7 @@ $(EXE_NAME): $(OBJECTS)
 	@$(CPP) -o $(BIN_DIR)$(EXE_NAME) $(OBJECTS) $(SOURCE_DIR)main.cpp $(CPPFLAGS) -Wall 
 
 run:
-	./bin/$(EXE_NAME) 
-
+	./bin/$(EXE_NAME) ../../Data/ascii/250.txt 250 SReQLLVRxOvoGuPxClVZGj
 #---------------------------------------------------------------------------------------------------------
 clean:
 	@echo "🧹 just some house keeping..."
