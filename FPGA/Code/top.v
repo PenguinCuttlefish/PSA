@@ -21,6 +21,7 @@
 
 
 module top(
+    input reset,
     input CLK100MHZ,
     input [7:0] pwm_in,
     output [7:0]SegmentDrivers, //J17, J18, T9, J14
@@ -33,7 +34,7 @@ module top(
     reg [7:0] b; //the address block of memory to search
     reg [7:0] bl;// length of the block address to be searched
     reg activate; // if activate clock to activate the PSA and tell it to continue searching from last address
-    reg reset;//set b and clock reset to tell the PSA to start searching from address b
+   // reg reset;//set b and clock reset to tell the PSA to start searching from address b
     wire done;//set to high when search ids done
     wire [7:0] found;// returns where the pattern being searched for is found
     
@@ -42,6 +43,7 @@ module top(
 	reg [3:0]hundreds = 4'd0;
 	reg [3:0]tens = 4'd0;
 	reg [3:0]units = 4'd0;
+	wire reset_Up;
     
     
     
@@ -53,7 +55,7 @@ module top(
         activate = 0;
         //Reset
         //reset = 0; #5
-        reset = 0; 
+        //reset = 0; 
         //reset = 0; #5
         //Begin search after reset
         activate = 1;
@@ -73,24 +75,27 @@ module top(
     .b(b),
     .bl(bl),
     .activate(activate),
-    .reset(reset),
+    .reset(reset_Up),
     .done(done),
     .found(found));
     
     //instantiate seven segment
-//    SS_Driver SS_Driver1(
-//		CLK100MHZ, 1,
-//		thousands, hundreds, tens, units, // Use temporary test values before adding hours2, hours1, mins2, mins1
-//		pwm_in,
-//		SegmentDrivers, SevenSegment
-//	);
-    
     SS_Driver SS_Driver1(
-		CLK100MHZ, 1,
-		1, 2, 3, 4, // Use temporary test values before adding hours2, hours1, mins2, mins1
+		CLK100MHZ, reset_Up,
+		thousands, hundreds, tens, units, // Use temporary test values before adding hours2, hours1, mins2, mins1
 		pwm_in,
 		SegmentDrivers, SevenSegment
 	);
+    
+    Debounce debouncer1(CLK100MHZ,reset,reset_Up);//interrrupt and debounce for minutes
+
+    
+//    SS_Driver SS_Driver1(
+//		CLK100MHZ, reset_Up,
+//		1, 2, 3, 4, // Use temporary test values before adding hours2, hours1, mins2, mins1
+//		pwm_in,
+//		SegmentDrivers, SevenSegment
+//	);
     
     always@(CLK100MHZ, found)begin
        $display("Searching for a match for 78\,77\,77"); 
@@ -106,3 +111,4 @@ module top(
         end
   end    
 endmodule
+
