@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
    int index = -1;
    clock_t time = clock();
 
-   std::cout << strlen(mainString) << " " << strlen(pattern) << std::endl;
+   std::cout << "Length of pattern " << strlen(pattern) << std::endl;
 
    int *locArray = YODA_PSA::naivePatternSearch(mainString, pattern, strlen(mainString), strlen(pattern), 0, &index);
    
