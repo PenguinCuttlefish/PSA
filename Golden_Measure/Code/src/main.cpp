@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
 {
    if (argc < 3)
    {
-      std::cout << "Missing File" << std::endl;
+      std::cout << "Missing inputs" << std::endl;
       return 0;
    }
 
@@ -47,11 +47,7 @@ int main(int argc, char *argv[])
 
    char* pattern = argv[3];
 
-   // std::cout << pattern << std::endl;
-   
    char* mainString = readfile(inputFile,std::stoi(sizeOfFile));
-
-   // std::cout << mainString <<std::endl;
 
    int index = -1;
    clock_t time = clock();
