@@ -9,7 +9,7 @@ make
 echo Golden measure with data of size 250 >> output.txt
 
 #non existing
-./bin/$EXE_NAME ../../Data/ascii/250_Gene.txt 250  ATAAGAA >> output.txt
+./bin/$EXE_NAME ../../Data/ascii/250_Gene.txt 250 ATAAGAA >> output.txt
 
 #short in middle
 ./bin/$EXE_NAME ../../Data/ascii/250_Gene.txt 250 GAAATTACTTCCGCTA >> output.txt

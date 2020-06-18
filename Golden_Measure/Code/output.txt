@@ -1,49 +1,49 @@
 
 Golden measure with data of size 250
 Length of pattern 7
-search took 2.3e-05 seconds
-Length of pattern 16
-Pattern found at position: 130
 search took 2.2e-05 seconds
 Length of pattern 16
+Pattern found at position: 130
+search took 2.3e-05 seconds
+Length of pattern 16
 Pattern found at position: 194
-search took 4.5e-05 seconds
+search took 2.2e-05 seconds
 Length of pattern 32
 Pattern found at position: 194
-search took 3e-05 seconds
+search took 2.2e-05 seconds
 
 Golden measure with data of size 500
 Length of pattern 7
-search took 2.7e-05 seconds
-Length of pattern 16
-Pattern found at position: 384
 search took 2.5e-05 seconds
 Length of pattern 16
+Pattern found at position: 384
+search took 2.2e-05 seconds
+Length of pattern 16
 Pattern found at position: 429
-search took 2.4e-05 seconds
+search took 2e-05 seconds
 Length of pattern 32
 Pattern found at position: 429
-search took 2.1e-05 seconds
+search took 2.2e-05 seconds
 
 Golden measure with data of size 1000
 Length of pattern 7
-search took 2.3e-05 seconds
+search took 4.6e-05 seconds
 Length of pattern 16
 Pattern found at position: 767
-search took 2.4e-05 seconds
+search took 2.7e-05 seconds
 Length of pattern 16
 Pattern found at position: 855
-search took 2.7e-05 seconds
+search took 2.8e-05 seconds
 Length of pattern 32
 Pattern found at position: 855
-search took 2.7e-05 seconds
+search took 2.6e-05 seconds
 
 Golden measure with data of size 2000
 Length of pattern 7
-search took 4.8e-05 seconds
+search took 3.2e-05 seconds
 Length of pattern 16
 Pattern found at position: 900
-search took 3.1e-05 seconds
+search took 3.3e-05 seconds
 Length of pattern 16
 Pattern found at position: 1890
 search took 3.3e-05 seconds
@@ -56,10 +56,10 @@ Length of pattern 7
 search took 4.5e-05 seconds
 Length of pattern 16
 Pattern found at position: 2012
-search took 4.7e-05 seconds
+search took 4.4e-05 seconds
 Length of pattern 16
 Pattern found at position: 3828
-search took 4.8e-05 seconds
+search took 4.4e-05 seconds
 Length of pattern 32
 Pattern found at position: 3828
-search took 4.2e-05 seconds
+search took 4.8e-05 seconds
