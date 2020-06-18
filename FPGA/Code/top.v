@@ -25,7 +25,8 @@ module top(
     input CLK100MHZ,
     input [7:0] pwm_in,
     output [7:0]SegmentDrivers, //J17, J18, T9, J14
-    output [7:0]SevenSegment // T10, R10, K16, K13, P15, T11, L18, H15
+    output [7:0]SevenSegment, // T10, R10, K16, K13, P15, T11, L18, H15
+    output [15:0] LED
     );
     
     //reg CLK100MHZ;
@@ -48,16 +49,11 @@ module top(
     
     
     initial begin
-        p = 9;
-        pl = 7;
+        p = 14;
+        pl = 2;
         b = 0;
         bl = 206;
         activate = 0;
-        //Reset
-        //reset = 0; #5
-        //reset = 0; 
-        //reset = 0; #5
-        //Begin search after reset
         activate = 1;
         
         thousands <= 0;
@@ -79,36 +75,39 @@ module top(
     .done(done),
     .found(found));
     
-    //instantiate seven segment
+    
+    
+    Debounce debouncer1(CLK100MHZ,reset,reset_Up);//interrrupt and debounce for minutes
+
+    
+    always@(CLK100MHZ, found)begin
+       //$display("Searching for a match for 78\,77\,77"); 
+       if(found > 9 && found < 99 )begin
+            tens <= ((found - (found %10))/10);
+            units <= (found - tens); 
+           if(found > 99 && found < 999)begin
+                hundreds <= found - ((found%100)/100);
+                tens <= ((found - hundreds*100) - ((found - hundreds*100)%10)/10);
+                units <= (found-hundreds*100 - tens*10);
+                if(found > 999)begin
+                   thousands <= found - ((found%1000)/1000);
+                   hundreds <= ((found- thousands*1000))-(((found- thousands*1000)%100)/100);
+                   tens <= ((found- thousands*1000-hundreds*100) - ((found- thousands*1000-hundreds*100)%10)/10);
+                   units <= (found- thousands*1000-hundreds*100 - tens*10);
+                end
+            end
+       end
+      
+//       if ( !(found < 0))begin
+//            $display("A match was found at address \t%d after %d ns", found, $time);
+//        end
+  end 
+  //instantiate seven segment
     SS_Driver SS_Driver1(
 		CLK100MHZ, reset_Up,
 		thousands, hundreds, tens, units, // Use temporary test values before adding hours2, hours1, mins2, mins1
 		pwm_in,
 		SegmentDrivers, SevenSegment
 	);
-    
-    Debounce debouncer1(CLK100MHZ,reset,reset_Up);//interrrupt and debounce for minutes
-
-    
-//    SS_Driver SS_Driver1(
-//		CLK100MHZ, reset_Up,
-//		1, 2, 3, 4, // Use temporary test values before adding hours2, hours1, mins2, mins1
-//		pwm_in,
-//		SegmentDrivers, SevenSegment
-//	);
-    
-    always@(CLK100MHZ, found)begin
-       $display("Searching for a match for 78\,77\,77"); 
-        thousands <= found - ((found%1000)/1000);
-        hundreds <= ((found- thousands*1000))-(((found- thousands*1000)%100)/100);
-        tens <= (found- thousands*1000-hundreds*100) - ((found- thousands*1000-hundreds*100)%10);
-        units <= (found- thousands*1000-hundreds*100 - tens*10); 
-        
-       if ( !(found < 0))begin
-              
-       
-            $display("A match was found at address \t%d after %d ns", found, $time);
-        end
-  end    
+  assign LED = $time;   
 endmodule
-
