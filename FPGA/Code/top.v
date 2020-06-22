@@ -30,11 +30,11 @@ module top(
     );
     
     //reg CLK100MHZ;
-    reg [7:0] p; //Address of pattern in pattern bram
-    reg [7:0] pl; //length of the pattern to be searched for
-    reg [7:0] b; //the address block of memory to search
-    reg [7:0] bl;// length of the block address to be searched
-    reg activate; // if activate clock to activate the PSA and tell it to continue searching from last address
+    reg [7:0] p = 2; //Address of pattern in pattern bram
+    reg [7:0] pl = 2; //length of the pattern to be searched for
+    reg [7:0] b = 0; //the address block of memory to search
+    reg [7:0] bl = 20;// length of the block address to be searched
+    reg activate = 1; // if activate clock to activate the PSA and tell it to continue searching from last address
    // reg reset;//set b and clock reset to tell the PSA to start searching from address b
     wire done;//set to high when search ids done
     wire [7:0] found;// returns where the pattern being searched for is found
@@ -45,24 +45,12 @@ module top(
 	reg [3:0]tens = 4'd0;
 	reg [3:0]units = 4'd0;
 	wire reset_Up;
+	reg [15:0]time_value;
     
-    
-    
-    initial begin
-        p = 14;
-        pl = 2;
-        b = 0;
-        bl = 206;
-        activate = 0;
-        activate = 1;
+ 
         
-        thousands <= 0;
-        hundreds <= 0;
-        tens <= 0;
-        units <= 0; 
         
-    end
-    
+   
     ///instantiate the search
     search test(
     .CLK100MHZ(CLK100MHZ),
@@ -82,22 +70,27 @@ module top(
     
     always@(CLK100MHZ, found)begin
        //$display("Searching for a match for 78\,77\,77"); 
-       if(found > 9 && found < 99 )begin
-            tens <= ((found - (found %10))/10);
-            units <= (found - tens); 
-           if(found > 99 && found < 999)begin
-                hundreds <= found - ((found%100)/100);
-                tens <= ((found - hundreds*100) - ((found - hundreds*100)%10)/10);
-                units <= (found-hundreds*100 - tens*10);
-                if(found > 999)begin
-                   thousands <= found - ((found%1000)/1000);
-                   hundreds <= ((found- thousands*1000))-(((found- thousands*1000)%100)/100);
-                   tens <= ((found- thousands*1000-hundreds*100) - ((found- thousands*1000-hundreds*100)%10)/10);
-                   units <= (found- thousands*1000-hundreds*100 - tens*10);
-                end
+            
+           if(found<9)begin
+                units <= found;
+           end 
+           else if(found > 9 && found < 99 )begin
+                tens <= (found/10)%10;
+                units <= found%10; 
+           end
+           else if(found > 99 && found < 999)begin
+                hundreds <= (found/100)%10;
+                tens <= (found/10)%10;
+                units <= found%10;
             end
-       end
-      
+            else if(found > 999)begin
+               thousands <= found/1000;
+               hundreds <= (found/100)%10;
+               tens <=  (found/10)%10;
+               units <= found%10;
+            end
+               
+      time_value =  $time;
 //       if ( !(found < 0))begin
 //            $display("A match was found at address \t%d after %d ns", found, $time);
 //        end
@@ -109,5 +102,5 @@ module top(
 		pwm_in,
 		SegmentDrivers, SevenSegment
 	);
-  assign LED = $time;   
+  assign LED = time_value;   
 endmodule
