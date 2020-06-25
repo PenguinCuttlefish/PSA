@@ -61,9 +61,16 @@ module search_tb(
     always begin
         #1  CLK100MHZ =~ CLK100MHZ;
     end
+//     --------------------uncomment this block to debug----------------------------//
+//     always@(reset,activate,done,test.pcount,test.bcount,test.douta,test.pattern_byte,test.state)begin
+//         $display("reset,activate,found,done,pattern,pcount,addra_p,douta,bcount,addra,state");
+//         $display("%d,\t%d,\t%d,\t%d,%h,\t%d,\t%d,\t%h,\t%d,\t%d,\t%b", reset,activate,found,done,test.pattern_byte,test.pcount,test.addra_p,test.douta,test.bcount,test.addra,test.state);
+//     end
+//     --------------------uncomment this block to debug----------------------------//
+
     
-    always@(reset,activate,done,test.pcount,test.bcount,test.douta,test.pattern_byte,test.state)begin
-        $display("reset,activate,found,done,pattern,pcount,addra_p,douta,bcount,addra,state");
-        $display("%d,\t%d,\t%d,\t%d,%h,\t%d,\t%d,\t%h,\t%d,\t%d,\t%b", reset,activate,found,done,test.pattern_byte,test.pcount,test.addra_p,test.douta,test.bcount,test.addra,test.state);
+    always@(found)begin
+        $display("found at address, %d at time %d",found, $time);
     end
+
 endmodule
