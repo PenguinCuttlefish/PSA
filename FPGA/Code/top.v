@@ -33,11 +33,11 @@ module top(
     reg [7:0] p = 2; //Address of pattern in pattern bram
     reg [7:0] pl = 2; //length of the pattern to be searched for
     reg [7:0] b = 0; //the address block of memory to search
-    reg [7:0] bl = 20;// length of the block address to be searched
+    reg [15:0] bl = 20;// length of the block address to be searched
     reg activate = 1; // if activate clock to activate the PSA and tell it to continue searching from last address
-   // reg reset;//set b and clock reset to tell the PSA to start searching from address b
+    // reg reset;//set b and clock reset to tell the PSA to start searching from address b
     wire done;//set to high when search ids done
-    wire [7:0] found;// returns where the pattern being searched for is found
+    wire [15:0] found;// returns where the pattern being searched for is found
     
     //display 
     reg [3:0]thousands = 4'd0;
