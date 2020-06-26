@@ -25,29 +25,29 @@ module search(
     input [7:0] p,              //Address of pattern in pattern bram
     input [7:0] pl,             //length of the pattern to be searched for
     input [7:0] b,              //the address block of memory to search
-    input [7:0] bl,             // length of the block address to be searched
+    input [14:0] bl,             // length of the block address to be searched
     input activate,             // if activate clock to activate the PSA and tell it to continue searching from last address
     input reset,                //set b and clock reset to tell the PSA to start searching from address b
     output reg done,            //set to high when search ids done
-    output reg [7:0] found      // returns where the pattern being searched for is found
+    output reg [14:0] found      // returns where the pattern being searched for is found
     
     );
     
      // Memory IO
     reg ena = 1;
     reg wea = 0;
-    reg [7:0] addra=0;          //The addresses will range from 0 to 249 assuming the data_250.coe is used
+    reg [14:0] addra=0;          //The addresses will range from 0 to 249 assuming the data_250.coe is used
     reg [7:0] dina=0;           //We're not putting data in, so we can leave this unassigned
-    wire [7:0] douta;           //This is a single byte from memory from a particular adress (addra)
+    wire [14:0] douta;           //This is a single byte from memory from a particular adress (addra)
     // pattern IO
     reg ena_p = 1;
     reg wea_p = 0;
-    reg [7:0] addra_p=0;        //The addresses will range from 0 to 15 assuming the patterns_16.coe is used
+    reg [14:0] addra_p=0;        //The addresses will range from 0 to 15 assuming the patterns_16.coe is used
     reg [7:0] dina_p=0;         //We're not putting data in, so we can leave this as is
-    wire[7:0] pattern_byte;    //This is a single byte from pattern memory from a particular adress (addra_p)
+    wire[14:0] pattern_byte;    //This is a single byte from pattern memory from a particular adress (addra_p)
     //counters
-    reg [7:0] pcount=0;
-    reg [7:0] bcount=0;
+    reg [14:0] pcount=0;
+    reg [14:0] bcount=0;
     //States using the one hot configuration
     parameter [6:0] RESET     = 7'b0000001;     //The initiliase block in the state mchine diagram
     parameter [6:0] CMP       = 7'b0000010;       
