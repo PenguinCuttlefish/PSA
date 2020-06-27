@@ -38,7 +38,7 @@ module search(
     reg wea = 0;
     reg [14:0] addra=0;          //The addresses will range from 0 to 249 assuming the data_250.coe is used
     reg [7:0] dina=0;           //We're not putting data in, so we can leave this unassigned
-    wire [14:0] douta;           //This is a single byte from memory from a particular adress (addra)
+    wire [7:0] douta;           //This is a single byte from memory from a particular adress (addra)
     // pattern IO
     reg ena_p = 1;
     reg wea_p = 0;
