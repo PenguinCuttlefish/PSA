@@ -24,7 +24,7 @@ module search(
     input CLK100MHZ,
     input [7:0] p,              //Address of pattern in pattern bram
     input [7:0] pl,             //length of the pattern to be searched for
-    input [7:0] b,              //the address block of memory to search
+    input [14:0] b,              //the address block of memory to search
     input [14:0] bl,             // length of the block address to be searched
     input activate,             // if activate clock to activate the PSA and tell it to continue searching from last address
     input reset,                //set b and clock reset to tell the PSA to start searching from address b
