@@ -44,7 +44,7 @@ module search(
     reg wea_p = 0;
     reg [14:0] addra_p=0;        //The addresses will range from 0 to 15 assuming the patterns_16.coe is used
     reg [7:0] dina_p=0;         //We're not putting data in, so we can leave this as is
-    wire[14:0] pattern_byte;    //This is a single byte from pattern memory from a particular adress (addra_p)
+    wire[7:0] pattern_byte;    //This is a single byte from pattern memory from a particular adress (addra_p)
     //counters
     reg [14:0] pcount=0;
     reg [14:0] bcount=0;
